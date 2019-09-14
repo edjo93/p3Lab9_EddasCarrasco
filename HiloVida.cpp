@@ -3,16 +3,17 @@
 #include<process.h>
 #include<iostream>
 
-#ifndef HILOVIDAMAXIMA_CPP
-#define HILOVIDAMAXIMA_CPP
+#ifndef HILOVIDA_CPP
+#define HILOVIDA_CPP
 using namespace std;
-class HiloVidaMaxima{
+class HiloVida{
    private:
       bool vive;
       int espera;
       string texto;
+      int vida;
    public:
-          HiloVidaMaxima(){
+          HiloVida(){
           	
           }
           void setVive(bool v){
@@ -25,26 +26,31 @@ class HiloVidaMaxima{
                espera=e;
           }          
           void run(){
-             _beginthread(&HiloVidaMaxima::runner, 
+             _beginthread(&HiloVida::runner, 
                           0, 
                           static_cast<void*>(this)
                           );             
           }
           //__cdecl
           static void runner(void* o){
-                 static_cast<HiloVidaMaxima*>(o)->runnerEstatico();
+                 static_cast<HiloVida*>(o)->runnerEstatico();
           }
           void runnerEstatico(){
                while(vive){
                    MessageBox(0,texto.c_str(), "advertencia", MB_OK);  
-				                         
+					vida+=1;				                         
                    Sleep(espera);
                    if(!vive){
                      _endthread();
                    }
                }
           } 
-		                     
+          int getVida(){
+          	return vida;
+		  }
+		  void getDatos(int vida){
+		  	this->vida=vida;
+		  }                   
           void stop(){
              vive=false; 
           }             

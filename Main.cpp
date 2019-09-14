@@ -2,11 +2,12 @@
 #include<iostream>
 #include"HiloBatalla.cpp"
 #include"HiloDinero.cpp"
-#include"HiloVidaMaxima.cpp"
+#include"HiloVida.cpp"
 #include<CONIO.H>
 using namespace std;
 int main(){
 	char exit;
+	HiloVida*hiloVida=new HiloVida();
 	HiloDinero* hiloDinero=new HiloDinero();
 	hiloDinero->setVive(false);
 	//--
@@ -22,6 +23,7 @@ int main(){
 	while(true){
 		if(hiloBatalla->getVive()){
 			hiloDinero->setVive(false);
+			hiloVida->setVive(false);
 			int count_jug_1;
 			int ganador;
 			int count_jug_2;
@@ -92,11 +94,27 @@ int main(){
 			
 			hiloBatalla->stop();
 		}else{
+			bool entroa1=false;
+			bool entroa2=false;
 			hiloDinero->setVive(true);
 			hiloDinero->setTexto("el dinero aumenta cada 7 seg en este menu");
 			hiloDinero->setVive(true);
 			hiloDinero->setEspera(7000);
 			hiloDinero->run();
+			if(jugador1->getVida()<=0){
+				entroa1=true;
+				hiloVida->setTexto("la vida aumenta para el jugador 1 en este menu");
+				hiloVida->run();
+				hiloVida->setEspera(6000);
+				hiloVida->setVive(true);
+			}
+			if(jugador2->getVida()<=0){
+				hiloVida->setTexto("la vida aumenta para el jugador 2 en este menu");
+				hiloVida->run();
+				hiloVida->setVive(true);
+				hiloVida->setEspera(6000);
+				entroa2=true;
+			}
 			
 			do{
 				cout<<"\n1-mostrar datos del jugador\n2-curar punto de vida\n3-salir\n?: ";
@@ -148,6 +166,13 @@ int main(){
 				jugador2->setDinero(hiloDinero->getDinero());
 				hiloDinero->stop();
 				hiloBatalla->setVive(true);
+				if(entroa1){
+					jugador1->setVida(hiloVida->getVida());
+				}
+				if(entroa2){
+					jugador2->setVida(hiloVida->getVida());
+				}
+				
 		}
 		cout<<"\n\n1 para salir por completo del programa/ otra tecla continuar ";
 		cin>>exit;
